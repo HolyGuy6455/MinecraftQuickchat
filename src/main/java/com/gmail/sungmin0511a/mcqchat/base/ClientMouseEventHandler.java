@@ -1,33 +1,23 @@
 package com.gmail.sungmin0511a.mcqchat.base;
 
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * ClientMouseEventHandler
  */
 public class ClientMouseEventHandler {
+    private static int MOUSE_EVENT_MOVE = -1;
+    private static int MOUSE_EVENT_WHEEL_CLICKED = -1;
 
     @SubscribeEvent
-    public void entityJoinWorld(EntityJoinWorldEvent e) {
-        if(e.getEntity() instanceof EntityPlayer){
-            EntityPlayer player = (EntityPlayer)e.getEntity();
-            player.inventory.addItemStackToInventory(new ItemStack(Items.IRON_SHOVEL));
+    public void onMouseEvent(MouseEvent e) {
+        if(e.getButton() == MOUSE_EVENT_MOVE){
+            return;
         }
-    }
-
-    @SubscribeEvent
-    public void livingDrops(LivingDropsEvent e) {
-        if(e.getEntity() instanceof EntityMob){
-            EntityMob mob = (EntityMob)e.getEntity();
-            e.getDrops().add(new EntityItem(mob.world,mob.posX,mob.posY,mob.posZ, new ItemStack(Items.SPIDER_EYE)));
-        }
+        QuickChatMod.logger.info("on mouse event listen");
+        QuickChatMod.logger.info("event is : {}",e.getButton());
+        QuickChatMod.logger.info("state is : {}",e.isButtonstate());
     }
 
 }

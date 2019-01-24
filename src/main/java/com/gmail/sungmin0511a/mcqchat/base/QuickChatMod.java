@@ -19,7 +19,7 @@ public class QuickChatMod
     public static final String CLIENT_PROXY_CLASS = "com.gmail.sungmin0511a.mcqchat.base.ClientProxy";
     public static final String COMMON_PROXY_CLASS = "com.gmail.sungmin0511a.mcqchat.base.CommonProxy";
 
-    private static Logger logger;
+    public static Logger logger;
 
     @SidedProxy(clientSide=QuickChatMod.CLIENT_PROXY_CLASS,serverSide=QuickChatMod.COMMON_PROXY_CLASS)
     public static CommonProxy proxy;
@@ -38,7 +38,6 @@ public class QuickChatMod
     public void init(FMLInitializationEvent event)
     {
         // some example code
-        logger.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
         proxy.init(event);
     }
 
