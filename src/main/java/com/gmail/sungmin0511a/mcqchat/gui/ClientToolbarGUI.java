@@ -20,8 +20,8 @@ public class ClientToolbarGUI extends GuiScreen {
     final private int GUI_WIDTH = 28;
     final private int GUI_HEIGHT = 28;
     final private int SHT = 29; // short reach
-    final private int LNG = 60; // long reach
-    final private int DRAW_LOCATION_X[] = {-SHT, 1  , SHT,-LNG, LNG,-SHT, 0  , SHT};
+    final private int LNG = 40; // long reach
+    final private int DRAW_LOCATION_X[] = {-SHT, 0  , SHT,-LNG, LNG,-SHT, 0  , SHT};
     final private int DRAW_LOCATION_Y[] = {-SHT,-LNG,-SHT, 0  , 0  , SHT, LNG, SHT};
 
     public ClientToolbarGUI(){
@@ -40,10 +40,25 @@ public class ClientToolbarGUI extends GuiScreen {
         GlStateManager.translate(width/2,height/2,0);
         GlStateManager.scale(2,2,2);
         
-        for (int i = 0; i < 8; i++) {
-            drawTexturedModalRect(DRAW_LOCATION_X[i]-14, DRAW_LOCATION_Y[i]-14,0, 0, GUI_WIDTH, GUI_HEIGHT);
+        int mouseX_width = (mouseX-width/2)/2;
+        int mouseY_height = (mouseY-height/2)/2;
+        double mouse_diagonal = Math.sqrt((mouseX_width*mouseX_width)+(mouseY_height*mouseY_height));
+        double acos = Math.acos(mouseX_width/mouse_diagonal);
+        if(mouseY_height > 0){
+            acos = Math.PI*2 - acos;
         }
+        int result = (int)Math.round(acos/Math.PI*4);
+        final int index[] = {4,2,1,0,3,5,6,7,4};
         
+        for (int i = 0; i < 8; i++) {
+            if( mouse_diagonal > 10 && i == index[result] ){
+                // selected button
+                drawTexturedModalRect(DRAW_LOCATION_X[i]-14, DRAW_LOCATION_Y[i]-14, 30, 0, GUI_WIDTH, GUI_HEIGHT);
+            }else{
+                // not selected
+                drawTexturedModalRect(DRAW_LOCATION_X[i]-14, DRAW_LOCATION_Y[i]-14, 0 , 0, GUI_WIDTH, GUI_HEIGHT);
+            }
+        }
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -65,12 +80,12 @@ public class ClientToolbarGUI extends GuiScreen {
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
         super.mouseReleased(mouseX, mouseY, state);
-        QuickChatMod.logger.info("state : {}",state);
+        //QuickChatMod.logger.info("state : {}",state);
         if(state == ClientMouseEventHandler.MOUSE_EVENT_WHEEL_CLICK){
             //quit
-            //Minecraft.getMinecraft().displayGuiScreen(null);
+            Minecraft.getMinecraft().displayGuiScreen(null);
         }else{
-            sendChatMessage("wow rywly?");
+            //sendChatMessage("wow rywly?");
         }
         
     }
