@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -16,16 +17,16 @@ import net.minecraft.util.ResourceLocation;
  */
 public class ClientToolbarGUI extends GuiScreen {
 
-    private ResourceLocation resourceLocation;
-    final private int GUI_WIDTH = 28;
-    final private int GUI_HEIGHT = 28;
+    private static ResourceLocation resourceLocation = new ResourceLocation(QuickChatMod.MODID, "textures/gui/toolbar.png");
+    final private int SIDE_LENGTH = 28;
     final private int SHT = 29; // short reach
     final private int LNG = 40; // long reach
     final private int DRAW_LOCATION_X[] = {-SHT, 0  , SHT,-LNG, LNG,-SHT, 0  , SHT};
     final private int DRAW_LOCATION_Y[] = {-SHT,-LNG,-SHT, 0  , 0  , SHT, LNG, SHT};
+    private QuickChat quickchat;
 
     public ClientToolbarGUI(){
-        resourceLocation = new ResourceLocation(QuickChatMod.MODID, "textures/gui/toolbar.png");
+        quickchat = new QuickChat();
     }
 
     @Override
@@ -37,6 +38,7 @@ public class ClientToolbarGUI extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
         Minecraft.getMinecraft().renderEngine.bindTexture(resourceLocation);
+        GlStateManager.pushMatrix();
         GlStateManager.translate(width/2,height/2,0);
         GlStateManager.scale(2,2,2);
         
@@ -52,13 +54,22 @@ public class ClientToolbarGUI extends GuiScreen {
         
         for (int i = 0; i < 8; i++) {
             if( mouse_diagonal > 10 && i == index[result] ){
-                // selected button
-                drawTexturedModalRect(DRAW_LOCATION_X[i]-14, DRAW_LOCATION_Y[i]-14, 30, 0, GUI_WIDTH, GUI_HEIGHT);
+                // selected button 
+                drawTexturedModalRect(DRAW_LOCATION_X[i]-14, DRAW_LOCATION_Y[i]-14, 30, 0, SIDE_LENGTH, SIDE_LENGTH);
+                drawTexturedModalRect(DRAW_LOCATION_X[i]-14, DRAW_LOCATION_Y[i]-14, 29 + i*SIDE_LENGTH, 57, SIDE_LENGTH, SIDE_LENGTH);
             }else{
                 // not selected
-                drawTexturedModalRect(DRAW_LOCATION_X[i]-14, DRAW_LOCATION_Y[i]-14, 0 , 0, GUI_WIDTH, GUI_HEIGHT);
+                drawTexturedModalRect(DRAW_LOCATION_X[i]-14, DRAW_LOCATION_Y[i]-14, 0 , 0, SIDE_LENGTH, SIDE_LENGTH);
+                drawTexturedModalRect(DRAW_LOCATION_X[i]-14, DRAW_LOCATION_Y[i]-14, 29 + i*SIDE_LENGTH, 57, SIDE_LENGTH, SIDE_LENGTH);
             }
         }
+
+        if( mouse_diagonal > 10){
+            String str = I18n.format("quickchat.2_"+((index[result]<4)?index[result]+1:index[result]+2));
+            fontRenderer.drawString(str, -fontRenderer.getStringWidth(str)/2, 0 , 0xffffff);
+        }
+
+        GlStateManager.popMatrix();
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
