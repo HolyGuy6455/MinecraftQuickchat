@@ -1,43 +1,60 @@
 package com.gmail.sungmin0511a.mcqchat.gui;
 
+import com.gmail.sungmin0511a.mcqchat.base.QuickChatMod;
+
+import net.minecraft.client.Minecraft;
+
 /**
  * QuickChat
  */
 public class QuickChat {
-    private int category_1;
-    private int category_2;
+    private int category1;
+    private int category2;
 
     public QuickChat(){
-        this.category_1 = 0;
-        this.category_2 = 0;
+        resetCategory();
+    }    
+
+    /**
+     * @return the category1
+     */
+    public int getCategory1() {
+        return category1;
+    }
+    
+    /**
+     * @return the category2
+     */
+    public int getCategory2() {
+        return category2;
     }
 
     /**
-     * @return the category_1
+     * @param category1 the category1 to set
      */
-    public int getCategory_1() {
-        return category_1;
+    public void setCategory(int category) {
+        if(this.category1 != 0){
+            this.category1 = category;
+        }else{
+            this.category2 = category;
+        }
+    }
+
+    public void resetCategory(){
+        this.category1 = 0;
+        this.category2 = 0;
     }
 
     /**
-     * @param category_1 the category_1 to set
+     * @return that the category1 is selected
      */
-    public void setCategory_1(int category_1) {
-        this.category_1 = category_1;
+    public boolean isCategory1stSeleted() {
+        return (this.category1 == 0);
     }
 
-    /**
-     * @return the category_2
-     */
-    public int getCategory_2() {
-        return category_2;
-    }
 
-    /**
-     * @param category_2 the category_2 to set
-     */
-    public void setCategory_2(int category_2) {
-        this.category_2 = category_2;
+    public void sendChat() {
+        QuickChatMod.logger.info("message : " + category1 + "-" + category2 );
     }
     
     
