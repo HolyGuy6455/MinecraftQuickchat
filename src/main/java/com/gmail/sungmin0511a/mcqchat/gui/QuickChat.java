@@ -33,7 +33,7 @@ public class QuickChat {
      * @param category1 the category1 to set
      */
     public void setCategory(int category) {
-        if(this.category1 != 0){
+        if(this.category1 == 0){
             this.category1 = category;
         }else{
             this.category2 = category;
